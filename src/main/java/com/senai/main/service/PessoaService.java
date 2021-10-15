@@ -13,10 +13,22 @@ import org.springframework.stereotype.Service;
 public class PessoaService extends ServiceGenerico<Pessoa, Long>{
     private final PessoaRepository pessoaRepository;
 
+    /**
+     * Construtor injetando o repository pelo hibernate
+     *
+     * @param pessoaRepository
+     */
     @Autowired
     public PessoaService(PessoaRepository pessoaRepository) {
         this.pessoaRepository = pessoaRepository;
     }
+
+    /**
+     * Sobrescrição do getter genérico, para que o
+     * service genérico consiga utilizar o service corretamente
+     *
+     * @return
+     */
     @Override
     protected RepositoryGenerico getRepositoryGenerico() {
         return this.pessoaRepository;

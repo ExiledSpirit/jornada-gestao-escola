@@ -9,6 +9,13 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
+
+/**
+ * Service genérico que possui metódos compartilhados
+ * por todas as outras entidades do sistema
+ * @param <T>
+ * @param <ID>
+ */
 public abstract class ServiceGenerico<T extends EntidadeGenerica, ID extends Serializable> {
     protected abstract RepositoryGenerico<T, ID> getRepositoryGenerico();
 
@@ -27,7 +34,7 @@ public abstract class ServiceGenerico<T extends EntidadeGenerica, ID extends Ser
      * @param entidade
      * @return T Entidade salva
      */
-    public T salvar(T entidade) {
+    public T salvar(T entidade) throws Exception {
         return this.getRepositoryGenerico().save(entidade);
     }
 
@@ -50,7 +57,7 @@ public abstract class ServiceGenerico<T extends EntidadeGenerica, ID extends Ser
      * @param entidade
      * @return T entidade atualizada
      */
-    public T atualizarPorId(T entidade) {
+    public T atualizarPorId(T entidade) throws Exception {
         return this.getRepositoryGenerico().save(entidade);
     }
 

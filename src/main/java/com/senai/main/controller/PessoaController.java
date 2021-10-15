@@ -16,7 +16,7 @@ public class PessoaController extends ControllerGenerico<Pessoa, Long>{
     private final PessoaService pessoaService;
 
     /**
-     * Construtor injetando o service
+     * Construtor injetando o service pelo spring
      *
      * @param pessoaService
      */
@@ -26,7 +26,8 @@ public class PessoaController extends ControllerGenerico<Pessoa, Long>{
     }
 
     /**
-     * Metodo sobrescrito retornando o service da entidade pessoa
+     * Sobrescrição do getter genérico, para que o
+     * controller genérico consiga utilizar o service corretamente
      *
      * @return
      */
