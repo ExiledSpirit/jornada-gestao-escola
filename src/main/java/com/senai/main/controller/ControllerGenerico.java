@@ -4,10 +4,10 @@ import com.senai.main.model.EntidadeGenerica;
 import com.senai.main.service.ServiceGenerico;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
-import java.util.List;
 
 public abstract class ControllerGenerico<T extends EntidadeGenerica, ID extends Serializable> {
     protected abstract ServiceGenerico<T, ID> getServiceGenerico();
@@ -21,6 +21,7 @@ public abstract class ControllerGenerico<T extends EntidadeGenerica, ID extends 
      * @return ResponseEntity com a lista das entidades encontradas
      * @throws Exception
      */
+    @PreAuthorize(value = "aluno")
     @GetMapping("")
     public ResponseEntity pesquisar() throws Exception{
         return new ResponseEntity<>(getServiceGenerico().pesquisar(), HttpStatus.OK);
@@ -34,6 +35,7 @@ public abstract class ControllerGenerico<T extends EntidadeGenerica, ID extends 
      * @return ResponseEntity com a entidade salva
      * @throws Exception
      */
+    @PreAuthorize(value = "aluno")
     @PostMapping("")
     public ResponseEntity salvar(@RequestBody T entidade) throws Exception{
         return new ResponseEntity<>(getServiceGenerico().salvar(entidade), HttpStatus.CREATED);
