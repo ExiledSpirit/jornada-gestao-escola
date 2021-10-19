@@ -5,13 +5,16 @@ import com.senai.main.model.Usuario;
 import com.senai.main.repository.RepositoryGenerico;
 import com.senai.main.repository.UsuarioRepository;
 import com.senai.main.utils.Encode;
+import com.senai.main.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.util.Map;
 
 @Service
 public class UsuarioService extends ServiceGenerico<Usuario, Long>{
     private final UsuarioRepository usuarioRepository;
-
     /**
      * Construtor injetando o repository pelo hibernate
      *
@@ -49,10 +52,23 @@ public class UsuarioService extends ServiceGenerico<Usuario, Long>{
      * @param usuario
      * @return
      */
-    public Usuario autenticar(Usuario usuario) throws Exception{
-        String senhaEncriptada = Encode.encriptar(usuario.getPassword());
-        return usuarioRepository.autenticar(usuario.getUsername(), senhaEncriptada)
+    public String autenticar(Map<String, String> usuario) throws Exception{
+        String senhaEncriptada = Encode.encriptar(usuario.get("password"));
+        Usuario user = usuarioRepository.autenticar(usuario.get("username"), senhaEncriptada)
                 .orElseThrow(() -> new LoginNotFoundException("Usuário não encontrado"));
+        String tokenJwt;
+        switch (user.getPrivilegio()) {
+            case 0:
+                tokenJwt = JwtUtils.criarJwt(user.getUsername(), "admin");
+                break;
+            case 1:
+                tokenJwt = JwtUtils.criarJwt(user.getUsername(), "professor");
+                break;
+            default:
+                tokenJwt = JwtUtils.criarJwt(user.getUsername(), "aluno");
+                break;
+        }
+        return tokenJwt;
     }
     /**
      * Sobrescrição do getter genérico, para que o
